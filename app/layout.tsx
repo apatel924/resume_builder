@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Resume Builder',
-  description: 'AI-powered resume builder and career platform',
+  description: 'Resume builder and career platform',
   generator: 'Next.js',
 }
 
