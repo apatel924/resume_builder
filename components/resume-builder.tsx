@@ -83,20 +83,20 @@ export default function ResumeBuilder() {
       )}
 
       {/* Template Selector */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="w-full px-6 py-6">
         <TemplateSelector />
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Editor Panel */}
-          <div className="space-y-6">
+      <div className="w-full px-6 pb-8">
+        <div className="grid lg:grid-cols-12 gap-6 max-w-none">
+          {/* Editor Panel - Takes up 4 columns */}
+          <div className="lg:col-span-4 space-y-4">
             <ResumeEditor />
           </div>
 
-          {/* Preview Panel */}
-          <div className="lg:sticky lg:top-24 lg:h-fit">
+          {/* Preview Panel - Takes up 8 columns */}
+          <div className="lg:col-span-8 lg:sticky lg:top-24 lg:h-fit">
             <ResumePreview />
           </div>
         </div>
