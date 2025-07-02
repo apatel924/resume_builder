@@ -1,7 +1,7 @@
 "use client"
 
 import type { ResumeData } from "@/contexts/resume-context"
-import { Mail, Phone, MapPin, LinkedinIcon, Calendar, ExternalLink } from "lucide-react"
+import { Mail, Phone, MapPin, Linkedin, Calendar, ExternalLink } from "lucide-react"
 
 interface CreativeTemplateProps {
   data: ResumeData
@@ -42,7 +42,7 @@ export default function CreativeTemplate({ data }: CreativeTemplateProps) {
               <span>{data.profile.location}</span>
             </div>
             <div className="flex items-center gap-2">
-              <LinkedinIcon className="w-4 h-4 text-[#06BEE1]" />
+              <Linkedin className="w-4 h-4 text-[#06BEE1]" />
               <span className="break-all">{data.profile.linkedin}</span>
             </div>
           </div>
