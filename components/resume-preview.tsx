@@ -21,13 +21,9 @@ export default function ResumePreview() {
   }
 
   return (
-    <Card className="bg-white shadow-2xl rounded-3xl overflow-hidden border-[#06BEE1]/20">
-      <div className="bg-gradient-to-r from-[#06BEE1]/10 to-[#1768AC]/10 p-4 border-b border-[#06BEE1]/20">
-        <h3 className="text-lg font-semibold text-[#03256C] text-center">Live Preview</h3>
-        <p className="text-sm text-[#1768AC]/70 text-center">Your resume updates in real-time</p>
-      </div>
-
-      <div className="p-6 bg-white min-h-[800px]">{renderTemplate()}</div>
+    <Card className="bg-white shadow-2xl rounded-3xl overflow-hidden border-[#06BEE1]/20 h-full">
+      {/* Resume content fills the entire container */}
+      <div className="h-full bg-white overflow-auto">{renderTemplate()}</div>
     </Card>
   )
 }
