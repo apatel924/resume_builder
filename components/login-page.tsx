@@ -9,7 +9,7 @@ export default function LoginPage() {
   const { signInWithGoogle, loading } = useAuth()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#06BEE1] via-[#1768AC] to-[#03256C] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#06BEE1] via-[#1768AC] to-[#03256C] flex items-center justify-center p-4 overflow-hidden">
       {/* Floating decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse"></div>
@@ -18,34 +18,34 @@ export default function LoginPage() {
         <div className="absolute bottom-20 right-20 w-28 h-28 bg-[#06BEE1]/20 rounded-full blur-xl animate-bounce delay-500"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-lg rounded-3xl mb-6 shadow-2xl">
-            <FileText className="w-10 h-10 text-white" />
+      <div className="relative z-10 w-full max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-lg rounded-3xl mb-4 shadow-2xl">
+            <FileText className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
+          <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
             Resume<span className="text-[#06BEE1]">Craft</span>
           </h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-white/80 max-w-xl mx-auto leading-relaxed">
             Create beautiful, professional resumes with our magical Studio Ghibli-inspired builder. Switch templates
             instantly and watch your story come to life.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+        <div className="grid md:grid-cols-2 gap-6 items-start max-w-5xl mx-auto">
           {/* Login Card */}
           <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl rounded-3xl">
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-2xl font-bold text-white">Welcome Back</CardTitle>
-              <CardDescription className="text-white/70">
+            <CardHeader className="text-center pb-3">
+              <CardTitle className="text-xl font-bold text-white">Welcome Back</CardTitle>
+              <CardDescription className="text-white/70 text-sm">
                 Sign in to continue crafting your perfect resume
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4">
               <Button
                 onClick={signInWithGoogle}
                 disabled={loading}
-                className="w-full bg-white hover:bg-white/90 text-[#03256C] font-semibold py-6 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+                className="w-full bg-white hover:bg-white/90 text-[#03256C] font-semibold py-4 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
               >
                 {loading ? (
                   <div className="flex items-center gap-3">
@@ -78,43 +78,47 @@ export default function LoginPage() {
               </Button>
 
               <div className="text-center">
-                <p className="text-white/60 text-sm">By signing in, you agree to our magical terms of service</p>
+                <p className="text-white/60 text-xs">By signing in, you agree to our magical terms of service</p>
               </div>
             </CardContent>
           </Card>
 
           {/* Features */}
-          <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 bg-[#06BEE1]/20 rounded-xl flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-[#06BEE1]" />
+          <div className="space-y-4">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-[#06BEE1]/20 rounded-xl flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-[#06BEE1]" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Magical Templates</h3>
+                <h3 className="text-base font-semibold text-white">Magical Templates</h3>
               </div>
-              <p className="text-white/70">
+              <p className="text-white/70 text-sm">
                 Switch between beautiful resume templates instantly with our live preview.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 bg-[#2541B2]/20 rounded-xl flex items-center justify-center">
-                  <Palette className="w-6 h-6 text-[#2541B2]" />
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-[#2541B2]/20 rounded-xl flex items-center justify-center">
+                  <Palette className="w-5 h-5 text-[#2541B2]" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Studio Ghibli Inspired</h3>
+                <h3 className="text-base font-semibold text-white">Studio Ghibli Inspired</h3>
               </div>
-              <p className="text-white/70">Enjoy a whimsical, organic design that makes resume building delightful.</p>
+              <p className="text-white/70 text-sm">
+                Enjoy a whimsical, organic design that makes resume building delightful.
+              </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 bg-[#1768AC]/20 rounded-xl flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-[#1768AC]" />
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-[#1768AC]/20 rounded-xl flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-[#1768AC]" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Auto-Save Magic</h3>
+                <h3 className="text-base font-semibold text-white">Auto-Save Magic</h3>
               </div>
-              <p className="text-white/70">Your progress is automatically saved, so you never lose your work.</p>
+              <p className="text-white/70 text-sm">
+                Your progress is automatically saved, so you never lose your work.
+              </p>
             </div>
           </div>
         </div>
