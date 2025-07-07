@@ -5,6 +5,12 @@ import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useAuth } from "./auth-context"
 
+export interface SkillCategory {
+  id: string
+  name: string
+  skills: string[]
+}
+
 export interface ResumeData {
   profile: {
     name: string
@@ -33,7 +39,7 @@ export interface ResumeData {
     year: string
     details: string
   }>
-  skills: string[]
+  skillCategories: SkillCategory[]
   projects: Array<{
     id: string
     name: string
@@ -52,7 +58,9 @@ interface ResumeContextType {
   addEducation: () => void
   updateEducation: (id: string, field: string, value: string) => void
   removeEducation: (id: string) => void
-  updateSkills: (skills: string[]) => void
+  addSkillCategory: () => void
+  updateSkillCategory: (id: string, field: string, value: string | string[]) => void
+  removeSkillCategory: (id: string) => void
   addProject: () => void
   updateProject: (id: string, field: string, value: string) => void
   removeProject: (id: string) => void
@@ -105,17 +113,27 @@ const defaultResumeData: ResumeData = {
       details: "Relevant Coursework: Data Structures, Algorithms, Software Engineering, Database Systems",
     },
   ],
-  skills: [
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "Node.js",
-    "Python",
-    "AWS",
-    "Docker",
-    "PostgreSQL",
-    "Git",
-    "Agile/Scrum",
+  skillCategories: [
+    {
+      id: "1",
+      name: "Programming Languages",
+      skills: ["JavaScript", "TypeScript", "Python"],
+    },
+    {
+      id: "2",
+      name: "Frameworks/Libraries",
+      skills: ["React", "Node.js"],
+    },
+    {
+      id: "3",
+      name: "Tools and Platforms",
+      skills: ["AWS", "Docker", "PostgreSQL", "Git"],
+    },
+    {
+      id: "4",
+      name: "Other Skills",
+      skills: ["Agile/Scrum"],
+    },
   ],
   projects: [
     {
@@ -138,11 +156,27 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
 
   // Load data from localStorage when user changes
   useEffect(() => {
-    if (user) {
-      const savedData = localStorage.getItem(`resume_data_${user.uid}`)
-      if (savedData) {
-        setResumeData(JSON.parse(savedData))
+    if (!user) return
+
+    const saved = localStorage.getItem(`resume_data_${user.uid}`)
+    if (!saved) return
+
+    try {
+      const parsed = JSON.parse(saved) as Partial<ResumeData>
+
+      // ensure newly-added fields exist
+      const merged: ResumeData = {
+        ...defaultResumeData,
+        ...parsed,
+        skillCategories: Array.isArray(parsed.skillCategories)
+          ? parsed.skillCategories
+          : defaultResumeData.skillCategories,
       }
+
+      setResumeData(merged)
+    } catch {
+      // fallback to defaults if JSON parse fails
+      setResumeData(defaultResumeData)
     }
   }, [user])
 
@@ -220,8 +254,32 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     }))
   }
 
-  const updateSkills = (skills: string[]) => {
-    setResumeData((prev) => ({ ...prev, skills }))
+  const addSkillCategory = () => {
+    const newCategory: SkillCategory = {
+      id: Date.now().toString(),
+      name: "",
+      skills: [],
+    }
+    setResumeData((prev) => ({
+      ...prev,
+      skillCategories: [...prev.skillCategories, newCategory],
+    }))
+  }
+
+  const updateSkillCategory = (id: string, field: string, value: string | string[]) => {
+    setResumeData((prev) => ({
+      ...prev,
+      skillCategories: prev.skillCategories.map((category) =>
+        category.id === id ? { ...category, [field]: value } : category,
+      ),
+    }))
+  }
+
+  const removeSkillCategory = (id: string) => {
+    setResumeData((prev) => ({
+      ...prev,
+      skillCategories: prev.skillCategories.filter((category) => category.id !== id),
+    }))
   }
 
   const addProject = () => {
@@ -263,7 +321,9 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         addEducation,
         updateEducation,
         removeEducation,
-        updateSkills,
+        addSkillCategory,
+        updateSkillCategory,
+        removeSkillCategory,
         addProject,
         updateProject,
         removeProject,
