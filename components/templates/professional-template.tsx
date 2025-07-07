@@ -100,14 +100,14 @@ export default function ProfessionalTemplate({ data }: ProfessionalTemplateProps
       )}
 
       {/* Skills */}
-      {data.skills.length > 0 && (
+      {data.skillCategories.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-bold text-[#03256C] mb-4 pb-2 border-b-2 border-[#06BEE1]">TECHNICAL SKILLS</h2>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {data.skills.map((skill, index) => (
-              <div key={index} className="text-[#03256C]/80 text-sm">
-                • {skill}
+            {data.skillCategories.map((category) => (
+              <div key={category.id} className="text-[#03256C]/80 text-sm">
+                • {category.name}
               </div>
             ))}
           </div>
