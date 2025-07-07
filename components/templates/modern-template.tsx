@@ -52,7 +52,7 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
         )}
 
         {/* Skills Section */}
-        {data.skills.length > 0 && (
+        {data.skillCategories.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg font-bold text-[#03256C] mb-4 pb-2 border-b border-[#06BEE1]/30 flex items-center gap-2">
               <Award className="w-5 h-5 text-[#06BEE1]" />
@@ -60,109 +60,12 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
             </h2>
 
             <div className="grid grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold text-[#1768AC] mb-2">Programming Languages</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {data.skills
-                    .filter((skill) =>
-                      [
-                        "JavaScript",
-                        "TypeScript",
-                        "Python",
-                        "Java",
-                        "C#",
-                        "PHP",
-                        "Ruby",
-                        "Go",
-                        "Rust",
-                        "Swift",
-                        "Kotlin",
-                      ].some((lang) => skill.toLowerCase().includes(lang.toLowerCase())),
-                    )
-                    .join(", ") || data.skills.slice(0, Math.ceil(data.skills.length / 3)).join(", ")}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-[#1768AC] mb-2">Frameworks/Libraries</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {data.skills
-                    .filter((skill) =>
-                      [
-                        "React",
-                        "Vue",
-                        "Angular",
-                        "Node.js",
-                        "Express",
-                        "Next.js",
-                        "Django",
-                        "Flask",
-                        "Spring",
-                        "Laravel",
-                      ].some((framework) => skill.toLowerCase().includes(framework.toLowerCase())),
-                    )
-                    .join(", ") ||
-                    data.skills
-                      .slice(Math.ceil(data.skills.length / 3), Math.ceil((2 * data.skills.length) / 3))
-                      .join(", ")}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-[#1768AC] mb-2">Tools and Platforms</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {data.skills
-                    .filter((skill) =>
-                      ["AWS", "Docker", "Git", "MongoDB", "PostgreSQL", "MySQL", "Redis", "Kubernetes", "Jenkins"].some(
-                        (tool) => skill.toLowerCase().includes(tool.toLowerCase()),
-                      ),
-                    )
-                    .join(", ") || data.skills.slice(Math.ceil((2 * data.skills.length) / 3)).join(", ")}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-[#1768AC] mb-2">Other Skills</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {data.skills
-                    .filter(
-                      (skill) =>
-                        ![
-                          "JavaScript",
-                          "TypeScript",
-                          "Python",
-                          "Java",
-                          "C#",
-                          "PHP",
-                          "Ruby",
-                          "Go",
-                          "Rust",
-                          "Swift",
-                          "Kotlin",
-                          "React",
-                          "Vue",
-                          "Angular",
-                          "Node.js",
-                          "Express",
-                          "Next.js",
-                          "Django",
-                          "Flask",
-                          "Spring",
-                          "Laravel",
-                          "AWS",
-                          "Docker",
-                          "Git",
-                          "MongoDB",
-                          "PostgreSQL",
-                          "MySQL",
-                          "Redis",
-                          "Kubernetes",
-                          "Jenkins",
-                        ].some((known) => skill.toLowerCase().includes(known.toLowerCase())),
-                    )
-                    .join(", ") || "Agile/Scrum, Problem Solving, Team Leadership"}
-                </p>
-              </div>
+              {data.skillCategories.map((category) => (
+                <div key={category.id}>
+                  <h3 className="font-semibold text-[#1768AC] mb-2">{category.name}</h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">{category.skills.join(", ")}</p>
+                </div>
+              ))}
             </div>
           </div>
         )}
