@@ -49,13 +49,13 @@ export default function CreativeTemplate({ data }: CreativeTemplateProps) {
         </div>
 
         {/* Skills */}
-        {data.skills.length > 0 && (
+        {data.skillCategories.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg font-bold mb-4 text-[#06BEE1]">Skills</h2>
             <div className="space-y-2">
-              {data.skills.map((skill, index) => (
-                <div key={index} className="bg-white/10 rounded-full px-3 py-1 text-sm">
-                  {skill}
+              {data.skillCategories.map((category) => (
+                <div key={category.id} className="bg-white/10 rounded-full px-3 py-1 text-sm">
+                  {category.name}
                 </div>
               ))}
             </div>
