@@ -19,18 +19,20 @@ export default function ResumeEditor() {
     addEducation,
     updateEducation,
     removeEducation,
-    updateSkills,
+    addSkillCategory,
+    updateSkillCategory,
+    removeSkillCategory,
     addProject,
     updateProject,
     removeProject,
   } = useResume()
 
-  const handleSkillsChange = (value: string) => {
+  const handleSkillsChange = (categoryId: string, value: string) => {
     const skills = value
       .split(",")
       .map((skill) => skill.trim())
       .filter(Boolean)
-    updateSkills(skills)
+    updateSkillCategory(categoryId, "skills", skills)
   }
 
   return (
@@ -334,15 +336,55 @@ export default function ResumeEditor() {
         icon={<Code className="w-6 h-6 text-white" />}
         gradient="bg-gradient-to-br from-[#2541B2] to-[#06BEE1]"
       >
-        <div>
-          <Label className="text-[#1768AC] font-medium text-sm">Skills (comma-separated)</Label>
-          <Textarea
-            value={resumeData.skills.join(", ")}
-            onChange={(e) => handleSkillsChange(e.target.value)}
-            rows={3}
-            className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl"
-            placeholder="JavaScript, React, Node.js, Python, AWS..."
-          />
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-[#1768AC]/70">Organize your skills by category</p>
+            <Button
+              onClick={addSkillCategory}
+              size="sm"
+              className="bg-[#2541B2] hover:bg-[#2541B2]/80 text-white rounded-xl h-8"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Category
+            </Button>
+          </div>
+
+          {resumeData.skillCategories.map((category, index) => (
+            <div key={category.id} className="bg-white/60 rounded-xl p-3 border border-[#06BEE1]/20">
+              <div className="flex justify-between items-start mb-3">
+                <h4 className="font-medium text-[#03256C] text-sm">Category {index + 1}</h4>
+                <Button
+                  onClick={() => removeSkillCategory(category.id)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded-xl h-6 w-6 p-0"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+
+              <div className="mb-3">
+                <Label className="text-[#1768AC] font-medium text-xs">Category Name</Label>
+                <Input
+                  value={category.name}
+                  onChange={(e) => updateSkillCategory(category.id, "name", e.target.value)}
+                  className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
+                  placeholder="e.g., Programming Languages, Frameworks, Tools"
+                />
+              </div>
+
+              <div>
+                <Label className="text-[#1768AC] font-medium text-xs">Skills (comma-separated)</Label>
+                <Textarea
+                  value={category.skills.join(", ")}
+                  onChange={(e) => handleSkillsChange(category.id, e.target.value)}
+                  rows={2}
+                  className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl text-sm"
+                  placeholder="JavaScript, React, Node.js..."
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </CollapsibleSection>
 
