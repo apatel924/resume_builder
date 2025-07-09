@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# ResumeCraft
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Craft professional resumes in minutes with an intuitive, live‑preview resume builder.
 
-## Available Scripts
+## 🚀 Live Demo
 
-In the project directory, you can run:
+> \[View the live app at your-deployment-url.com]
 
-### `npm start`
+## 📸 Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Login Page                                       | Editor Interface                              | Live Preview & Export                             |
+| ------------------------------------------------ | --------------------------------------------- | ------------------------------------------------- |
+| ![Login Screen](docs/screenshots/login-page.png) | ![Editor Screen](docs/screenshots/editor.png) | ![Preview & Export](docs/screenshots/preview.png) |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## ✨ Features
 
-### `npm test`
+- **Google Authentication**: Secure sign‑in via Google accounts (powered by NextAuth.js).
+- **Auto‑Save Magic**: Changes are saved instantly to localStorage—never lose your work.
+- **Instant Templates**: Switch between **Modern Bubble**, **Creative Flow**, and **Professional Zen** with a single click.
+- **Section‑Based Editor**: Fill out Personal Info, Experience, Education, Skills, and Projects in collapsible, drag‑and‑drop panels.
+- **Live Preview**: See your resume rendered page‑by‑page with perfect letter‑size scaling.
+- **PDF Export**: Download your resume as a print‑ready PDF.
+- **Mobile‑Friendly**: Responsive layout for on‑the‑go edits.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Installation & Setup
 
-### `npm run build`
+1. **Clone the repository**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   git clone https://github.com/yourusername/resumecraft.git
+   cd resumecraft
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Install dependencies**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   npm install
+   # or yarn install
+   ```
 
-### `npm run eject`
+3. **Setup environment variables**
+   Create a `.env.local` file in the root:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```ini
+   GOOGLE_CLIENT_ID=<your_google_client_id>
+   GOOGLE_CLIENT_SECRET=<your_google_client_secret>
+   NEXTAUTH_URL=http://localhost:3000
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Run the development server**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   ```bash
+   npm run dev
+   # or yarn dev
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## 📂 Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+├── app/                  # Next.js App Router
+│   ├── api/auth/...      # NextAuth route
+│   ├── globals.css       # Tailwind base styles
+│   ├── layout.tsx        # Root layout (Server Component)
+│   └── page.tsx          # Client page with session logic
+├── components/           # React components
+├── contexts/             # Auth & Resume React Contexts
+├── lib/                  # Utility functions
+├── public/               # Static assets (e.g. screenshots)
+├── styles/               # Tailwind CSS config overrides
+├── .env.local            # Environment variables
+├── next.config.mjs       # Next.js configuration
+├── tailwind.config.ts    # Tailwind CSS config
+└── README.md             # This file
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📦 Technologies
 
-### Code Splitting
+- **Framework:** Next.js 15 (App Router)
+- **Language:** React 19 + TypeScript
+- **Authentication:** NextAuth.js (Google Provider)
+- **Styling:** Tailwind CSS with shadcn/ui components
+- **Icons:** lucide‑react
+- **State Management:** React Context (resume data + session)
+- **Utilities:** clsx, tailwind‑merge, date‑fns
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🤝 Contributing
 
-### Analyzing the Bundle Size
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feat/YourFeature`
+3. Commit your changes: `git commit -m "feat: Add amazing feature"`
+4. Push to your branch: `git push origin feat/YourFeature`
+5. Open a Pull Request describing your changes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📄 License
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
