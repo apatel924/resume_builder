@@ -1,13 +1,17 @@
 "use client"
 
+import type React from "react"
+
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { useResume } from "@/contexts/resume-context"
-import { Plus, Trash2, User, Briefcase, GraduationCap, Code, FolderOpen } from "lucide-react"
+import { Plus, Trash2, User, Briefcase, GraduationCap, Code, FolderOpen, GripVertical, Eye } from "lucide-react"
 import CollapsibleSection from "./collapsible-section"
+import ExperienceEditModal from "./experience-edit-modal"
+import ProjectEditModal from "./project-edit-modal"
 
 export default function ResumeEditor() {
   const {
@@ -16,6 +20,7 @@ export default function ResumeEditor() {
     addExperience,
     updateExperience,
     removeExperience,
+    reorderExperience,
     addEducation,
     updateEducation,
     removeEducation,
@@ -25,7 +30,13 @@ export default function ResumeEditor() {
     addProject,
     updateProject,
     removeProject,
+    reorderProjects,
   } = useResume()
+
+  const [editingExperience, setEditingExperience] = useState<string | null>(null)
+  const [editingProject, setEditingProject] = useState<string | null>(null)
+  const [draggedExperience, setDraggedExperience] = useState<number | null>(null)
+  const [draggedProject, setDraggedProject] = useState<number | null>(null)
 
   const handleSkillsChange = (categoryId: string, value: string) => {
     const skills = value
@@ -33,6 +44,42 @@ export default function ResumeEditor() {
       .map((skill) => skill.trim())
       .filter(Boolean)
     updateSkillCategory(categoryId, "skills", skills)
+  }
+
+  const handleExperienceDrag = {
+    start: (e: React.DragEvent, index: number) => {
+      setDraggedExperience(index)
+      e.dataTransfer.effectAllowed = "move"
+    },
+    over: (e: React.DragEvent) => {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = "move"
+    },
+    drop: (e: React.DragEvent, dropIndex: number) => {
+      e.preventDefault()
+      if (draggedExperience !== null && draggedExperience !== dropIndex) {
+        reorderExperience(draggedExperience, dropIndex)
+      }
+      setDraggedExperience(null)
+    },
+  }
+
+  const handleProjectDrag = {
+    start: (e: React.DragEvent, index: number) => {
+      setDraggedProject(index)
+      e.dataTransfer.effectAllowed = "move"
+    },
+    over: (e: React.DragEvent) => {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = "move"
+    },
+    drop: (e: React.DragEvent, dropIndex: number) => {
+      e.preventDefault()
+      if (draggedProject !== null && draggedProject !== dropIndex) {
+        reorderProjects(draggedProject, dropIndex)
+      }
+      setDraggedProject(null)
+    },
   }
 
   return (
@@ -142,105 +189,69 @@ export default function ResumeEditor() {
         icon={<Briefcase className="w-6 h-6 text-white" />}
         gradient="bg-gradient-to-br from-[#2541B2] to-[#1768AC]"
       >
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-[#1768AC]/70">Add your work experience</p>
-            <Button
-              onClick={addExperience}
-              size="sm"
-              className="bg-[#06BEE1] hover:bg-[#06BEE1]/80 text-white rounded-xl h-8"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
-          </div>
-
+        <div className="space-y-3">
           {resumeData.experience.map((exp, index) => (
-            <div key={exp.id} className="bg-white/60 rounded-xl p-3 border border-[#06BEE1]/20">
-              <div className="flex justify-between items-start mb-3">
-                <h4 className="font-medium text-[#03256C] text-sm">Experience {index + 1}</h4>
-                <Button
-                  onClick={() => removeExperience(exp.id)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded-xl h-6 w-6 p-0"
-                >
-                  <Trash2 className="w-3 h-3" />
-                </Button>
+            <div
+              key={exp.id}
+              draggable
+              onDragStart={(e) => handleExperienceDrag.start(e, index)}
+              onDragOver={handleExperienceDrag.over}
+              onDrop={(e) => handleExperienceDrag.drop(e, index)}
+              className={`flex items-center gap-3 p-3 bg-white/60 rounded-xl border border-[#06BEE1]/20 hover:bg-white/80 transition-colors cursor-pointer ${
+                draggedExperience === index ? "opacity-50" : ""
+              }`}
+              onClick={() => setEditingExperience(exp.id)}
+            >
+              <div className="cursor-grab active:cursor-grabbing text-[#1768AC]/50 hover:text-[#1768AC]">
+                <GripVertical className="w-5 h-5" />
               </div>
 
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">Job Title</Label>
-                  <Input
-                    value={exp.title}
-                    onChange={(e) => updateExperience(exp.id, "title", e.target.value)}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">Company</Label>
-                  <Input
-                    value={exp.company}
-                    onChange={(e) => updateExperience(exp.id, "company", e.target.value)}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 mb-3">
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">Location</Label>
-                  <Input
-                    value={exp.location}
-                    onChange={(e) => updateExperience(exp.id, "location", e.target.value)}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">Start Date</Label>
-                  <Input
-                    type="month"
-                    value={exp.startDate}
-                    onChange={(e) => updateExperience(exp.id, "startDate", e.target.value)}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">End Date</Label>
-                  <Input
-                    type="month"
-                    value={exp.endDate}
-                    onChange={(e) => updateExperience(exp.id, "endDate", e.target.value)}
-                    disabled={exp.current}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm disabled:opacity-50"
-                  />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold text-[#03256C] text-sm truncate">
+                      {exp.title || "Untitled Position"}
+                    </h4>
+                    <p className="text-[#1768AC] text-xs">
+                      {exp.company && exp.location
+                        ? `${exp.company} • ${exp.location}`
+                        : exp.company || exp.location || "No company specified"}
+                    </p>
+                  </div>
+                  <div className="text-right text-xs text-[#1768AC]/70">
+                    {exp.startDate && (exp.current || exp.endDate) ? (
+                      <span>
+                        {exp.startDate} - {exp.current ? "present" : exp.endDate}
+                      </span>
+                    ) : (
+                      <span>No dates specified</span>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2 mb-3">
-                <Checkbox
-                  id={`current-${exp.id}`}
-                  checked={exp.current}
-                  onCheckedChange={(checked) => updateExperience(exp.id, "current", checked as boolean)}
-                />
-                <Label htmlFor={`current-${exp.id}`} className="text-[#1768AC] font-medium text-xs">
-                  I currently work here
-                </Label>
-              </div>
-
-              <div>
-                <Label className="text-[#1768AC] font-medium text-xs">Description</Label>
-                <Textarea
-                  value={exp.description}
-                  onChange={(e) => updateExperience(exp.id, "description", e.target.value)}
-                  rows={2}
-                  className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl text-sm"
-                  placeholder="• Describe your key achievements"
-                />
-              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-[#1768AC]/50 hover:text-[#1768AC] hover:bg-[#06BEE1]/10 rounded-xl h-8 w-8 p-0"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setEditingExperience(exp.id)
+                }}
+              >
+                <Eye className="w-4 h-4" />
+              </Button>
             </div>
           ))}
+
+          <Button
+            onClick={addExperience}
+            variant="outline"
+            className="w-full border-[#06BEE1]/30 text-[#1768AC] hover:bg-[#06BEE1]/10 rounded-xl h-10 border-dashed bg-transparent"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Work Experience
+          </Button>
         </div>
       </CollapsibleSection>
 
@@ -394,77 +405,69 @@ export default function ResumeEditor() {
         icon={<FolderOpen className="w-6 h-6 text-white" />}
         gradient="bg-gradient-to-br from-[#1768AC] to-[#2541B2]"
       >
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-[#1768AC]/70">Add your projects</p>
-            <Button
-              onClick={addProject}
-              size="sm"
-              className="bg-[#2541B2] hover:bg-[#2541B2]/80 text-white rounded-xl h-8"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
-          </div>
-
+        <div className="space-y-3">
           {resumeData.projects.map((project, index) => (
-            <div key={project.id} className="bg-white/60 rounded-xl p-3 border border-[#06BEE1]/20">
-              <div className="flex justify-between items-start mb-3">
-                <h4 className="font-medium text-[#03256C] text-sm">Project {index + 1}</h4>
-                <Button
-                  onClick={() => removeProject(project.id)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded-xl h-6 w-6 p-0"
-                >
-                  <Trash2 className="w-3 h-3" />
-                </Button>
+            <div
+              key={project.id}
+              draggable
+              onDragStart={(e) => handleProjectDrag.start(e, index)}
+              onDragOver={handleProjectDrag.over}
+              onDrop={(e) => handleProjectDrag.drop(e, index)}
+              className={`flex items-center gap-3 p-3 bg-white/60 rounded-xl border border-[#06BEE1]/20 hover:bg-white/80 transition-colors cursor-pointer ${
+                draggedProject === index ? "opacity-50" : ""
+              }`}
+              onClick={() => setEditingProject(project.id)}
+            >
+              <div className="cursor-grab active:cursor-grabbing text-[#1768AC]/50 hover:text-[#1768AC]">
+                <GripVertical className="w-5 h-5" />
               </div>
 
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">Project Name</Label>
-                  <Input
-                    value={project.name}
-                    onChange={(e) => updateProject(project.id, "name", e.target.value)}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label className="text-[#1768AC] font-medium text-xs">Link (optional)</Label>
-                  <Input
-                    value={project.link || ""}
-                    onChange={(e) => updateProject(project.id, "link", e.target.value)}
-                    className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                    placeholder="github.com/username/project"
-                  />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold text-[#03256C] text-sm truncate">
+                      {project.name || "Untitled Project"}
+                    </h4>
+                    <p className="text-[#1768AC] text-xs truncate">
+                      {project.technologies || "No technologies specified"}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="mb-3">
-                <Label className="text-[#1768AC] font-medium text-xs">Technologies</Label>
-                <Input
-                  value={project.technologies}
-                  onChange={(e) => updateProject(project.id, "technologies", e.target.value)}
-                  className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl h-8 text-sm"
-                  placeholder="React, Node.js, MongoDB"
-                />
-              </div>
-
-              <div>
-                <Label className="text-[#1768AC] font-medium text-xs">Description</Label>
-                <Textarea
-                  value={project.description}
-                  onChange={(e) => updateProject(project.id, "description", e.target.value)}
-                  rows={2}
-                  className="mt-1 border-[#06BEE1]/30 focus:border-[#06BEE1] rounded-xl text-sm"
-                  placeholder="Describe the project and your role"
-                />
-              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-[#1768AC]/50 hover:text-[#1768AC] hover:bg-[#06BEE1]/10 rounded-xl h-8 w-8 p-0"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setEditingProject(project.id)
+                }}
+              >
+                <Eye className="w-4 h-4" />
+              </Button>
             </div>
           ))}
+
+          <Button
+            onClick={addProject}
+            variant="outline"
+            className="w-full border-[#06BEE1]/30 text-[#1768AC] hover:bg-[#06BEE1]/10 rounded-xl h-10 border-dashed bg-transparent"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Project
+          </Button>
         </div>
       </CollapsibleSection>
+
+      {/* Modals */}
+      <ExperienceEditModal
+        experienceId={editingExperience}
+        isOpen={!!editingExperience}
+        onClose={() => setEditingExperience(null)}
+      />
+
+      <ProjectEditModal projectId={editingProject} isOpen={!!editingProject} onClose={() => setEditingProject(null)} />
     </div>
   )
 }
