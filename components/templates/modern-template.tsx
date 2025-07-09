@@ -162,10 +162,9 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
   const pages: typeof sections[] = []
   let currentPage: typeof sections = []
   let currentPageHeight = headerHeight + 48 // Header + reduced padding
-  const maxPageHeight = 760 // INCREASED from 720 - use more space!
+  const maxPageHeight = 760 
 
   sections.forEach((section) => {
-    // Check if section fits on current page
     if (currentPageHeight + section.estimatedHeight <= maxPageHeight) {
       currentPage.push(section)
       currentPageHeight += section.estimatedHeight
@@ -175,7 +174,7 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
         pages.push([...currentPage])
       }
       currentPage = [section]
-      currentPageHeight = 48 + section.estimatedHeight // Reduced new page padding + section
+      currentPageHeight = 48 + section.estimatedHeight 
     }
   })
 
