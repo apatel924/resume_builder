@@ -1,63 +1,73 @@
 "use client"
 
+import { signIn, useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useAuth } from "@/contexts/auth-context"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Sparkles, FileText, Linkedin, Zap } from "lucide-react"
 
 export default function LoginPage() {
-  const { signInWithGoogle, loading } = useAuth()
+  const { status } = useSession()
+  const loading = status === "loading"
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-blue-400/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-32 w-24 h-24 bg-indigo-400/10 rounded-full blur-lg animate-bounce"></div>
-        <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-cyan-400/5 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 right-20 w-28 h-28 bg-blue-400/10 rounded-full blur-xl animate-bounce delay-500"></div>
+        <div className="absolute top-20 left-20 w-32 h-32 bg-blue-400/10 rounded-full blur-xl animate-pulse" />
+        <div className="absolute top-40 right-32 w-24 h-24 bg-indigo-400/10 rounded-full blur-lg animate-bounce" />
+        <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-cyan-400/5 rounded-full blur-2xl animate-pulse delay-1000" />
+        <div className="absolute bottom-20 right-20 w-28 h-28 bg-blue-400/10 rounded-full blur-xl animate-bounce delay-500" />
 
-        {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-blue-400/30 rounded-full animate-ping delay-700"></div>
-        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-indigo-400/40 rounded-full animate-ping delay-1000"></div>
-        <div className="absolute top-1/2 left-1/4 w-1.5 h-1.5 bg-cyan-400/30 rounded-full animate-ping delay-500"></div>
+        <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-blue-400/30 rounded-full animate-ping delay-700" />
+        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-indigo-400/40 rounded-full animate-ping delay-1000" />
+        <div className="absolute top-1/2 left-1/4 w-1.5 h-1.5 bg-cyan-400/30 rounded-full animate-ping delay-500" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl mx-auto">
-        {/* Header with entrance animation */}
+        {/* Header */}
         <div className="text-center mb-8 animate-in fade-in slide-in-from-top duration-1000">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-3xl mb-4 shadow-2xl animate-in zoom-in duration-700 delay-300">
             <FileText className="w-8 h-8 text-white animate-in fade-in duration-500 delay-500" />
           </div>
           <h1 className="text-4xl font-bold text-white mb-3 tracking-tight animate-in slide-in-from-left duration-800 delay-200">
-            Resume<span className="text-blue-300 animate-in slide-in-from-right duration-800 delay-400">Craft</span>
+            Resume
+            <span className="text-blue-300 animate-in slide-in-from-right duration-800 delay-400">
+              Craft
+            </span>
           </h1>
           <p className="text-lg text-slate-200 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom duration-700 delay-600">
-            Create beautiful, professional resumes with our intuitive builder. Switch templates instantly and watch your
-            story come to life.
+            Create beautiful, professional resumes with our intuitive builder.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6 items-start max-w-5xl mx-auto">
-          {/* Login Card - Fixed animation */}
+          {/* Login Card */}
           <div className="order-2 lg:order-1">
             <div className="animate-in slide-in-from-left duration-800 delay-700">
               <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl rounded-3xl hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl">
                 <CardHeader className="text-center pb-3">
-                  <CardTitle className="text-xl font-bold text-white">Welcome Back</CardTitle>
+                  <CardTitle className="text-xl font-bold text-white">
+                    Welcome Back
+                  </CardTitle>
                   <CardDescription className="text-slate-300 text-sm">
                     Sign in to continue crafting your perfect resume
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Button
-                    onClick={signInWithGoogle}
+                    onClick={() => signIn("google")}
                     disabled={loading}
                     className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] text-sm border-0 group"
                   >
                     {loading ? (
                       <div className="flex items-center gap-3">
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
                         Signing you in...
                       </div>
                     ) : (
@@ -89,18 +99,17 @@ export default function LoginPage() {
                       </div>
                     )}
                   </Button>
-
-                  <div className="text-center">
-                    <p className="text-slate-400 text-xs">By signing in, you agree to our terms of service</p>
-                  </div>
+                  <p className="text-center text-slate-400 text-xs">
+                    By signing in, you agree to our terms of service
+                  </p>
                 </CardContent>
               </Card>
             </div>
           </div>
 
-          {/* Features with synchronized animations */}
+          {/* Features panel */}
           <div className="order-1 lg:order-2 space-y-4 animate-in slide-in-from-right duration-800 delay-800">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl group">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl group">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <Sparkles className="w-5 h-5 text-white group-hover:rotate-12 transition-transform duration-300" />
@@ -116,7 +125,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl group">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl group">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <Linkedin className="w-5 h-5 text-white group-hover:rotate-12 transition-transform duration-300" />
@@ -132,7 +141,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl border border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl group">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-xl border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl group">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <Zap className="w-5 h-5 text-white group-hover:rotate-12 transition-transform duration-300" />
