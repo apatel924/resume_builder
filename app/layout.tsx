@@ -1,20 +1,23 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next"
+import "./globals.css"
+import { Providers } from "@/components/providers"
 
 export const metadata: Metadata = {
-  title: 'Resume Builder',
-  description: 'Resume builder and career platform',
-  generator: 'Next.js',
+  title: "Resume Builder",
+  description: "Resume builder and career platform",
+  generator: "Next.js",
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
