@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import { useAuth } from "@/contexts/auth-context"
 import { useResume } from "@/contexts/resume-context"
 import ResumeEditor from "./resume-editor"
@@ -70,33 +69,21 @@ export default function ResumeBuilder() {
         </div>
       </header>
 
-      {/* Save Notification */}
-      {showSaveNotification && (
-        <div className="fixed top-20 right-4 z-50 animate-in slide-in-from-right">
-          <Card className="bg-green-500 text-white p-3 rounded-xl shadow-lg">
-            <div className="flex items-center gap-2">
-              <Save className="w-4 h-4" />
-              <span className="text-sm font-medium">Resume saved successfully!</span>
-            </div>
-          </Card>
-        </div>
-      )}
-
       {/* Template Selector */}
       <div className="w-full px-6 py-6">
         <TemplateSelector />
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - EVEN MORE LEFT SIDE SPACE */}
       <div className="w-full px-6 pb-8">
         <div className="grid lg:grid-cols-12 gap-6 max-w-none">
-          {/* Editor Panel - Takes up 4 columns */}
-          <div className="lg:col-span-4 space-y-4">
+          {/* Editor Panel - MUCH WIDER for optimal editing experience (5 columns) */}
+          <div className="lg:col-span-5 space-y-4">
             <ResumeEditor />
           </div>
 
-          {/* Preview Panel - Takes up 8 columns */}
-          <div className="lg:col-span-8 lg:sticky lg:top-24 lg:h-fit">
+          {/* Preview Panel - BALANCED for great preview (7 columns) */}
+          <div className="lg:col-span-7 lg:sticky lg:top-24 h-[calc(100vh-6rem)]">
             <ResumePreview />
           </div>
         </div>
