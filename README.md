@@ -8,9 +8,17 @@
 
 ## 📸 Screenshots
 
-| Login Page                                       | Editor Interface                              | Live Preview & Export                             |
-| ------------------------------------------------ | --------------------------------------------- | ------------------------------------------------- |
-| ![Login Screen](docs/screenshots/login-page.png) | ![Editor Screen](docs/screenshots/editor.png) | ![Preview & Export](docs/screenshots/preview.png) |
+| Login Page                    | Google Sign-In                             | Landing Page                      |
+| ----------------------------- | ------------------------------------------ | --------------------------------- |
+| ![Login](docs/login-page.png) | ![Google Sign-In](docs/google-sign-in.png) | ![Landing](docs/landing-page.png) |
+
+| Resume Editor               | Drag & Drop Reorganize                        | Content Section              |
+| --------------------------- | --------------------------------------------- | ---------------------------- |
+| ![Editor](docs/content.png) | ![Drag & Drop](docs/drag-drop-reorganize.png) | ![Content](docs/content.png) |
+
+| Resume Preview                      | Resume Preview (Alt)                   |
+| ----------------------------------- | -------------------------------------- |
+| ![Preview](docs/resume-preview.png) | ![Preview 2](docs/resume-preview2.png) |
 
 ## ✨ Features
 
