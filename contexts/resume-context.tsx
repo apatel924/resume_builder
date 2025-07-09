@@ -40,6 +40,8 @@ export interface ResumeData {
     details: string
   }>
   skillCategories: SkillCategory[]
+  /** legacy flat skills list – still used by older templates */
+  skills?: string[]
   projects: Array<{
     id: string
     name: string
@@ -55,6 +57,7 @@ interface ResumeContextType {
   addExperience: () => void
   updateExperience: (id: string, field: string, value: string | boolean) => void
   removeExperience: (id: string) => void
+  reorderExperience: (fromIndex: number, toIndex: number) => void
   addEducation: () => void
   updateEducation: (id: string, field: string, value: string) => void
   removeEducation: (id: string) => void
@@ -64,6 +67,7 @@ interface ResumeContextType {
   addProject: () => void
   updateProject: (id: string, field: string, value: string) => void
   removeProject: (id: string) => void
+  reorderProjects: (fromIndex: number, toIndex: number) => void
   selectedTemplate: string
   setSelectedTemplate: (template: string) => void
 }
@@ -135,6 +139,7 @@ const defaultResumeData: ResumeData = {
       skills: ["Agile/Scrum"],
     },
   ],
+  skills: [],
   projects: [
     {
       id: "1",
@@ -171,6 +176,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         skillCategories: Array.isArray(parsed.skillCategories)
           ? parsed.skillCategories
           : defaultResumeData.skillCategories,
+        skills: Array.isArray(parsed.skills) ? parsed.skills : [],
       }
 
       setResumeData(merged)
@@ -223,6 +229,15 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       experience: prev.experience.filter((exp) => exp.id !== id),
     }))
+  }
+
+  const reorderExperience = (fromIndex: number, toIndex: number) => {
+    setResumeData((prev) => {
+      const newExperience = [...prev.experience]
+      const [removed] = newExperience.splice(fromIndex, 1)
+      newExperience.splice(toIndex, 0, removed)
+      return { ...prev, experience: newExperience }
+    })
   }
 
   const addEducation = () => {
@@ -310,6 +325,15 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     }))
   }
 
+  const reorderProjects = (fromIndex: number, toIndex: number) => {
+    setResumeData((prev) => {
+      const newProjects = [...prev.projects]
+      const [removed] = newProjects.splice(fromIndex, 1)
+      newProjects.splice(toIndex, 0, removed)
+      return { ...prev, projects: newProjects }
+    })
+  }
+
   return (
     <ResumeContext.Provider
       value={{
@@ -318,6 +342,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         addExperience,
         updateExperience,
         removeExperience,
+        reorderExperience,
         addEducation,
         updateEducation,
         removeEducation,
@@ -327,6 +352,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         addProject,
         updateProject,
         removeProject,
+        reorderProjects,
         selectedTemplate,
         setSelectedTemplate,
       }}
