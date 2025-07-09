@@ -4,13 +4,15 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/auth-context"
 import { useResume } from "@/contexts/resume-context"
+import { useSession, signOut } from "next-auth/react"
 import ResumeEditor from "./resume-editor"
 import ResumePreview from "./resume-preview"
 import TemplateSelector from "./template-selector"
 import { LogOut, FileText, Save, Download } from "lucide-react"
 
 export default function ResumeBuilder() {
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
+  const { data: session } = useSession()
   const { selectedTemplate } = useResume()
   const [showSaveNotification, setShowSaveNotification] = useState(false)
 
@@ -31,7 +33,7 @@ export default function ResumeBuilder() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-[#03256C]">ResumeCraft</h1>
-                <p className="text-sm text-[#1768AC]/70">Welcome back, {user?.name}</p>
+                <p className="text-sm text-[#1768AC]/70">Welcome back, {session?.user?.name}</p>
               </div>
             </div>
 
@@ -56,7 +58,7 @@ export default function ResumeBuilder() {
               </Button>
 
               <Button
-                onClick={signOut}
+                onClick={() => signOut()}
                 variant="ghost"
                 size="sm"
                 className="text-[#03256C]/70 hover:text-[#03256C] hover:bg-[#03256C]/10 rounded-xl"
